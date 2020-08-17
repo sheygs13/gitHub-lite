@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/35219d34ae.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="./css/styles.css" />
+    <title>Github Lite</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <header class="header">
+        <img src="img/github-logo.png" alt="trillo logo" class="logo" />
+
+        <form action="#" class="search">
+          <input
+            name="query"
+            type="text"
+            class="search__input"
+            placeholder="Search github user..."
+          />
+          <button name="submit" class="search__button">
+            <svg class="search__icon">
+              <use xlink:href="img/sprite.svg#icon-magnifying-glass"></use>
+            </svg>
+          </button>
+        </form>
+
+        <nav class="user-nav">
+          <div class="user-nav__user">
+            <img
+              src="img/unknown.png"
+              alt="User photo"
+              class="user-nav__user-photo"
+            />
+            <span class="user-nav__user-name">user</span>
+          </div>
+        </nav>
+      </header>
+
+      <div class="content">
+        <nav class="sidebar">
+          <!--dynamically generated user-profile-->
+        </nav>
+
+        <main class="main">
+          <nav class="sub-nav">
+            <ul class="list-tab">
+              <a class="list-tab-item__link" href="#">
+                <li class="list-tab-item">
+                  <span class="list-tab-item__icon-repo">
+                    <i class="fas fa-book"></i>
+                  </span>
+                  <span class="list-tab-label">Repositories</span>
+                  <span class="list-tab-item__repos">0</span>
+                </li>
+              </a>
+            </ul>
+            <form class="filter-search" action="#">
+              <input
+                name="query"
+                type="text"
+                class="search__input"
+                placeholder="Filter a repository..."
+              />
+            </form>
+          </nav>
+          <hr />
+          <div class="repositories"></div>
+        </main>
+      </div>
+    </div>
+    <script src="js/main.js" type="module"></script>
+  </body>
+</html>
