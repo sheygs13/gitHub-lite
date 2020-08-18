@@ -106,7 +106,6 @@ async function getRepoNum(user) {
 
 async function getUserRepos(username) {
   const data = await GithubAPI.getUserRepos(username);
-  console.log(data);
   getRepoNum(username);
   let result = data.map(
     ({ name, full_name, description, updated_at, language }) => ({
