@@ -22,12 +22,15 @@ async function getUserProfile(username) {
 function handleSubmit(e) {
   e.preventDefault();
   const form = e.currentTarget;
-  getUserProfileAndDisplay(form.query.value);
-  getUserRepos(form.query.value);
-  form.reset();
-  clearResult();
-  showLoader(sidebar);
-  showLoader(repositories);
+  const value = form.query.value;
+  if (value) {
+    getUserProfileAndDisplay(value);
+    getUserRepos(value);
+    form.reset();
+    clearResult();
+    showLoader(sidebar);
+    showLoader(repositories);
+  }
 }
 
 function clearResult() {
