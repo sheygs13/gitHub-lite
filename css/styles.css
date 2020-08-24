@@ -40,12 +40,6 @@ a {
   text-decoration: none;
 }
 
-hr {
-  border: 0;
-  height: 0;
-  border-bottom: 1px solid #d3d3d3;
-}
-
 @media only screen and (max-width: 68.75em) {
   html {
     font-size: 50%;
@@ -292,6 +286,7 @@ body {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid #d3d3d3;
 }
 
 .filter-search {
@@ -316,6 +311,7 @@ body {
 
 .repository {
   padding: 1.5em;
+  border-bottom: 1px solid #d3d3d3;
 }
 
 .repository a {

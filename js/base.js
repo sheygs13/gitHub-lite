@@ -1,4 +1,4 @@
-import { getRandomColor, timeSince } from './utils.js';
+import { removeLoader, getRandomColor, timeSince } from './utils.js';
 const element = {
   main: document.querySelector('.main'),
   sidebar: document.querySelector('.sidebar'),
@@ -8,6 +8,40 @@ const element = {
   repoNum: document.querySelector('.list-tab-item__repos'),
   filter: document.querySelector('.filter-search'),
 };
+
+function displayUserProfile(user) {
+  if (user) {
+    const { avatar_url, login, name, followers, following } = user;
+    populateUserBio(avatar_url, name, login);
+    const html = `    
+        <div class="sidebar__user">
+          <div class="center">
+             <img class="sidebar__user-photo" src="${avatar_url}" alt="${name}" />
+          </div>
+          <p class="sidebar__user-name">${name}</p>
+          <p class="sidebar__user-nickname">${login}</p>
+            <div class="sidebar__user-stats">
+               <a class="sidebar__user-stats-followers" href="#">
+                 <span>
+                   <i class="fas fa-users"></i>
+                 </span>
+                 <span class="followers">${followers}</span>
+                 <span>followers</span>
+               </a>
+               <a class="sidebar__user-stats-following" href="#">
+                 <span class="following">${following}</span>
+                 <span>following</span>
+               </a>
+            </div>
+          </div>
+          <div class="legal">
+            &copy; 2020 by sheygs.
+          </div>
+   `;
+    element.sidebar.insertAdjacentHTML('afterbegin', html);
+    removeLoader();
+  }
+}
 
 function renderUserRepo(repo) {
   const html = `
@@ -26,7 +60,6 @@ function renderUserRepo(repo) {
        </p>
        <p class="updated_at">Updated ${timeSince(repo.updated_at)}</p>
      </div>
-     <hr/>
   `;
   return html;
 }
@@ -42,4 +75,10 @@ function clearResult() {
   element.repositories.innerHTML = '';
 }
 
-export { element, renderUserRepo, clearResult, populateUserBio };
+export {
+  element,
+  displayUserProfile,
+  renderUserRepo,
+  clearResult,
+  populateUserBio,
+};
