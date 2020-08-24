@@ -1,18 +1,12 @@
 import GithubAPI from './api.js';
+import handleError from './error.js';
+import { showLoader, removeLoader } from './utils.js';
 import {
-  showLoader,
-  removeLoader,
-  timeSince,
-  getRandomColor,
-} from './utils.js';
-
-const main = document.querySelector('.main');
-const sidebar = document.querySelector('.sidebar');
-const userBio = document.querySelector('.user-nav__user');
-const form = document.querySelector('.search');
-const repositories = document.querySelector('.repositories');
-const repoNum = document.querySelector('.list-tab-item__repos');
-const filter = document.querySelector('.filter-search');
+  element,
+  renderUserRepo,
+  populateUserBio,
+  clearResult,
+} from './base.js';
 
 async function getUserProfile(username) {
   const response = await GithubAPI.getUserInfo(username);
@@ -21,31 +15,16 @@ async function getUserProfile(username) {
 
 function handleSubmit(e) {
   e.preventDefault();
-  const form = e.currentTarget;
-  const value = form.query.value;
+  const input = e.currentTarget.query;
+  const value = input.value;
   if (value) {
     getUserProfileAndDisplay(value);
     getUserRepos(value);
-    form.reset();
+    element.form.reset();
     clearResult();
-    showLoader(sidebar);
-    showLoader(repositories);
+    showLoader(element.sidebar);
+    showLoader(element.repositories);
   }
-}
-
-function clearResult() {
-  sidebar.innerHTML = '';
-  repositories.innerHTML = '';
-}
-
-function handleError({ message }) {
-  console.error(message);
-}
-
-function populateUserBio(imageUrl, alt, login) {
-  userBio.children[0].src = imageUrl;
-  userBio.children[0].alt = alt;
-  userBio.children[1].textContent = login;
 }
 
 function filterRepo(e) {
@@ -60,11 +39,11 @@ function filterRepo(e) {
 }
 
 async function getUserProfileAndDisplay(user) {
-  form.submit.disabled = true;
+  element.form.submit.disabled = true;
   const res = await getUserProfile(user).catch(handleError);
   // invalid user
   if (res.message) return;
-  form.submit.disabled = false;
+  element.form.submit.disabled = false;
   displayUserProfile(res);
 }
 
@@ -97,14 +76,14 @@ async function displayUserProfile(user) {
             &copy; 2020 by sheygs.
           </div>
    `;
-    sidebar.insertAdjacentHTML('afterbegin', html);
+    element.sidebar.insertAdjacentHTML('afterbegin', html);
     removeLoader();
   }
 }
 
 async function getRepoNum(user) {
   const repos = await GithubAPI.getUserRepos(user);
-  repoNum.textContent = repos.length;
+  element.repoNum.textContent = repos.length;
 }
 
 async function getUserRepos(username) {
@@ -120,32 +99,10 @@ async function getUserRepos(username) {
     })
   );
   result = result.map((el) => renderUserRepo(el)).join('');
-  repositories.innerHTML = result;
-  main.insertAdjacentHTML('beforeend', repositories);
+  element.repositories.innerHTML = result;
+  element.main.insertAdjacentHTML('beforeend', element.repositories);
   removeLoader();
 }
 
-function renderUserRepo(repo) {
-  const html = `
-     <div class="repository">
-       <a href="https://github.com/${
-         repo.full_name
-       }" target="_blank"><p class="name">${repo.name}</p></a>
-       <p class="description" style="display:${!repo.description && 'none'}">${
-    repo.description
-  }</p>     
-       <p class="language" style="display: ${!repo.language && 'none'}">
-       <span class="dot" style="color:${
-         repo.language && getRandomColor(repo.language)
-       }"></span>
-       ${repo.language}
-       </p>
-       <p class="updated_at">Updated ${timeSince(repo.updated_at)}</p>
-     </div>
-     <hr/>
-  `;
-  return html;
-}
-
-form.addEventListener('submit', handleSubmit);
-filter.addEventListener('keyup', filterRepo);
+element.form.addEventListener('submit', handleSubmit);
+element.filter.addEventListener('keyup', filterRepo);
