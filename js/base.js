@@ -1,4 +1,5 @@
 import { removeLoader, getRandomColor, timeSince } from './utils.js';
+
 const element = {
   main: document.querySelector('.main'),
   sidebar: document.querySelector('.sidebar'),
@@ -49,10 +50,10 @@ function renderUserRepo(repo) {
        <a href="https://github.com/${
          repo.full_name
        }" target="_blank"><p class="name">${repo.name}</p></a>
-       <p class="description" style="display:${!repo.description && 'none'}">${
+       <p class="description ${!repo.description && 'hide'}">${
     repo.description
   }</p>     
-       <p class="language" style="display: ${!repo.language && 'none'}">
+       <p class="language ${!repo.language && 'hide'}">
        <span class="dot" style="color:${
          repo.language && getRandomColor(repo.language)
        }"></span>
