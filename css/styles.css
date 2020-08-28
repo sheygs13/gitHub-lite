@@ -245,10 +245,9 @@ body {
 }
 
 .list-tab {
-  padding: 1.2em 0;
+  padding: 1.5em 0;
   margin: 0 1em;
   width: 50%;
-  /* border-bottom-color: #f9826c; */
 }
 
 .list-tab-item {
@@ -338,4 +337,8 @@ body {
 .dot:before {
   content: ' \25CF';
   font-size: 20px;
+}
+
+.hide {
+  display: none;
 }
