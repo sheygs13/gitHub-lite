@@ -1,4 +1,4 @@
-import { removeLoader, getRandomColor, timeSince } from './utils.js';
+import { getRandomColor, timeSince } from './utils.js';
 
 const element = {
   main: document.querySelector('.main'),
@@ -10,9 +10,20 @@ const element = {
   filter: document.querySelector('.filter-search'),
 };
 
-function displayUserProfile(user) {
+const displayUserProfile = (user) => {
   if (user) {
-    const { avatar_url, login, name, followers, following } = user;
+    const {
+      avatar_url,
+      login,
+      name,
+      bio,
+      followers,
+      following,
+      location,
+      email,
+      blog,
+      twitter_username,
+    } = user;
     populateUserBio(avatar_url, name, login);
     const html = `    
         <div class="sidebar__user">
@@ -21,6 +32,7 @@ function displayUserProfile(user) {
           </div>
           <p class="sidebar__user-name">${name}</p>
           <p class="sidebar__user-nickname">${login}</p>
+          <p class="bio">${bio}</p>
             <div class="sidebar__user-stats">
                <a class="sidebar__user-stats-followers" href="#">
                  <span>
@@ -34,6 +46,10 @@ function displayUserProfile(user) {
                  <span>following</span>
                </a>
             </div>
+          <p class="location">${location}</p>  
+          <p class="email">${email}</p>
+          <p class="blog">${blog}</p>
+          <p class="twitter">${twitter_username}</p>
           </div>
           <div class="legal">
             &copy; 2020 by sheygs.
@@ -42,10 +58,10 @@ function displayUserProfile(user) {
     element.sidebar.insertAdjacentHTML('afterbegin', html);
     removeLoader();
   }
-}
+};
 
-function renderUserRepo(repo) {
-  const html = `
+const renderUserRepo = (repo) => {
+  return `
      <div class="repository">
        <a href="https://github.com/${
          repo.full_name
@@ -62,19 +78,32 @@ function renderUserRepo(repo) {
        <p class="updated_at">Updated ${timeSince(repo.updated_at)}</p>
      </div>
   `;
-  return html;
-}
+};
 
-function populateUserBio(imageUrl, alt, login) {
+const populateUserBio = (imageUrl, alt, login) => {
   element.userBio.children[0].src = imageUrl;
   element.userBio.children[0].alt = alt;
   element.userBio.children[1].textContent = login;
-}
+};
 
-function clearResult() {
+const clearResult = () => {
   element.sidebar.innerHTML = '';
   element.repositories.innerHTML = '';
-}
+};
+
+const showLoader = (parent) => {
+  const loader = `
+    <p class="loader">Loading...</p>
+  `;
+  parent.insertAdjacentHTML('afterbegin', loader);
+};
+
+const removeLoader = () => {
+  const loader = document.querySelector('.loader');
+  if (loader) {
+    loader.remove();
+  }
+};
 
 export {
   element,
@@ -82,4 +111,6 @@ export {
   renderUserRepo,
   clearResult,
   populateUserBio,
+  showLoader,
+  removeLoader,
 };

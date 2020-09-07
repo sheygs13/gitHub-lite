@@ -1,17 +1,20 @@
 import GithubAPI from './api.js';
 import handleError from './error.js';
-import { showLoader, removeLoader } from './utils.js';
 import {
   element,
   renderUserRepo,
   displayUserProfile,
   clearResult,
+  showLoader,
+  removeLoader,
 } from './base.js';
 
-async function getUserProfile(username) {
-  const response = await GithubAPI.getUserInfo(username);
-  return response;
-}
+const getUserProfile = async (username) => {
+  try {
+    const response = await GithubAPI.getUserInfo(username);
+    return response;
+  } catch (error) {}
+};
 
 function handleSubmit(e) {
   e.preventDefault();
@@ -47,24 +50,26 @@ async function getUserProfileAndDisplay(user) {
   displayUserProfile(res);
 }
 
-async function getNumberOfRepos(user) {
-  const repos = await GithubAPI.getUserRepos(user);
-  element.repoNum.textContent = repos.length;
-}
+const getNumberOfRepos = async (user) => {
+  try {
+    const repos = await GithubAPI.getUserRepos(user);
+    element.repoNum.textContent = repos.length;
+  } catch (error) {}
+};
 
 async function getUserRepos(username) {
   const data = await GithubAPI.getUserRepos(username);
   getNumberOfRepos(username);
-  let result = data.map(
-    ({ name, full_name, description, updated_at, language }) => ({
+  const result = data
+    .map(({ name, full_name, description, updated_at, language }) => ({
       name,
       full_name,
       description,
       updated_at,
       language,
-    })
-  );
-  result = result.map((el) => renderUserRepo(el)).join('');
+    }))
+    .map(renderUserRepo)
+    .join('');
   element.repositories.innerHTML = result;
   element.main.insertAdjacentHTML('beforeend', element.repositories);
   removeLoader();
